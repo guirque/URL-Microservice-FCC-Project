@@ -3,6 +3,17 @@ const express = require('express');
 const cors = require('cors');
 const app = express();
 
+//Logger Middleware
+const logger = require('./logger');
+app.use(logger);
+
+//Short URL Data
+let shortUrl = 0;
+let urls = [];
+
+//DNS
+const dns = require('dns');
+
 // Basic Configuration
 const port = process.env.PORT || 3000;
 
