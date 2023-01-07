@@ -76,6 +76,28 @@ async function saveURL(res, url)
   }
 }
 
+//Redirect Function
+async function redirect(req, res)
+{
+  try
+  {
+    //READ DATA
+    const link = await urlObjModel.findOne({short_url: req.params.shorturl});
+
+    if(link)
+    {
+      res.status(200).redirect(link.original_url);
+    }
+    else error404(res);
+    
+  }
+  catch(error)
+  {
+    console.log(`There was an error while redirecting user.`);
+    error404(res);
+  }
+}
+
 let shortUrl = 0;
 let urls = [];
 
@@ -108,34 +130,17 @@ const errorMsg = (res) =>
       error: 'invalid url'
     })
 }
+const error404 = (res) => {res.status(404).json({error: 'URL not found'});}
+
 app.post('/api/shorturl', (req, res) =>
 {
   const {url} = req.body;
   saveURL(res, url);
-
 });
 
 app.get('/api/shorturl/:shorturl', (req, res) =>
 {
-
-  //READ DATA
-  const link = urls.find((urlObj) => 
-  {
-    if(req.params.shorturl == urlObj.short_url) return true;
-    else return false;
-  });
-
-  if(link)
-  {
-    res.status(200).redirect(link.original_url);
-  }
-  else
-  {
-    res.status(404).json(
-      {
-        error: 'URL not found'
-      });
-  }
+  redirect(req, res);
 });
 
 app.listen(port, function() {
