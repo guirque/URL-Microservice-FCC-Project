@@ -12,8 +12,21 @@ const mongoose = require('mongoose');
 mongoose.set('strictQuery', false);
 mongoose.connect('mongodb://127.0.0.1/urls', () => {console.log('Connection to database established.')});
 
-//Requiring urlObj model
+//Requiring urlObj model and shortUrl model
 const urlObjModel = require('./urlObjModel');
+const shortUrlObjModel = require('./shortUrlObjModel');
+
+//Checking if URL Tracker is necessary
+(async function checkShortURL()
+{
+  console.log(`Checking if shortUrl tracker exists.`);
+  if(await shortUrlObjModel.count() <= 0) 
+  {
+    const newShortUrlTracker = new shortUrlObjModel({shorturl: 0});
+    await newShortUrlTracker.save();
+    console.log(`New object to track shortUrl number created.`);
+  };
+}());
 
 //Looking Up URL Wrapping Function
 function lookup(res, url, hostname)
@@ -55,12 +68,15 @@ async function saveURL(res, url)
       //Checking if hostname exists
       await lookup(res, url, hostname);
       
-      //NOTE FOR LATER: CHECK IF BOOL ANALYSIS IS NECESSARY (maybe just await alone will do, since, in case of errors, lookup will trigger the try/catch)
       //INSERT DATA
+      let shortUrlTracker = await shortUrlObjModel.findOne();
+            
       let newLink = {
         original_url: url,
-        short_url: shortUrl++
+        short_url: shortUrlTracker.shorturl++
       };
+
+      await shortUrlTracker.save();
         
       const dbObj = new urlObjModel(newLink); //Creating db object
       await dbObj.save();
@@ -71,7 +87,7 @@ async function saveURL(res, url)
   }
   catch(error)
   {
-    console.log(`Error saving urlObj`);
+    console.log(`Error saving urlObj: ${error}`);
     errorMsg(res);
   }
 }
@@ -97,9 +113,6 @@ async function redirect(req, res)
     error404(res);
   }
 }
-
-let shortUrl = 0;
-let urls = [];
 
 //DNS
 const dns = require('dns');
