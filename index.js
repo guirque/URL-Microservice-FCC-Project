@@ -16,10 +16,10 @@ const urlObjModel = require('./urlObjModel');
 const shortUrlObjModel = require('./shortUrlObjModel');
 
 //Connecting to DB on MongoDB Atlas
-mongoose.connect('mongodb+srv://root:root@fccprojects.ugxakyf.mongodb.net/?retryWrites=true&w=majority', 
+mongoose.connect('mongodb+srv://fccProjectGuique:enter@fccprojects.ugxakyf.mongodb.net/?retryWrites=true&w=majority', 
 { useNewUrlParser: true, useUnifiedTopology: true })
 .then(() => { console.log('Connection to database established.'); checkShortURL(); })
-.catch((error) => { console.log(error) });
+.catch((error) => { console.log(`An error occurred connecting to the DB: ${error}`) });
 
 //Checking if URL Tracker is necessary
 async function checkShortURL()
@@ -33,7 +33,6 @@ async function checkShortURL()
   };
 }
 
-
 //Looking Up URL Wrapping Function
 function lookup(res, url, hostname)
 {
@@ -41,7 +40,6 @@ function lookup(res, url, hostname)
   {
     dns.lookup(hostname, (error, address, family) => 
     {
-      console.log('Looking up');
       if(error) {reject();}
       else resolve(true);
   });
