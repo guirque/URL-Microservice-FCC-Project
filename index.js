@@ -10,14 +10,19 @@ app.use(logger);
 //Short URL Data
 const mongoose = require('mongoose');
 mongoose.set('strictQuery', false);
-mongoose.connect('mongodb://127.0.0.1/urls', () => {console.log('Connection to database established.')});
 
 //Requiring urlObj model and shortUrl model
 const urlObjModel = require('./urlObjModel');
 const shortUrlObjModel = require('./shortUrlObjModel');
 
+//Connecting to DB on MongoDB Atlas
+mongoose.connect('mongodb+srv://root:root@fccprojects.ugxakyf.mongodb.net/?retryWrites=true&w=majority', 
+{ useNewUrlParser: true, useUnifiedTopology: true })
+.then(() => { console.log('Connection to database established.'); checkShortURL(); })
+.catch((error) => { console.log(error) });
+
 //Checking if URL Tracker is necessary
-(async function checkShortURL()
+async function checkShortURL()
 {
   console.log(`Checking if shortUrl tracker exists.`);
   if(await shortUrlObjModel.count() <= 0) 
@@ -26,7 +31,8 @@ const shortUrlObjModel = require('./shortUrlObjModel');
     await newShortUrlTracker.save();
     console.log(`New object to track shortUrl number created.`);
   };
-}());
+}
+
 
 //Looking Up URL Wrapping Function
 function lookup(res, url, hostname)
