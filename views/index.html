@@ -3,6 +3,7 @@
 <html>
   <head>
     <title>URL Shortener Microservice | freeCodeCamp.org</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <link
       rel="icon"
       type="image/png"
@@ -12,21 +13,38 @@
   </head>
 
   <body>
-    <h1>URL Shortener Microservice</h1>
+    <header>
+      <h1>URL Shortener Microservice</h1>
+    </header>
     <main>
-      <section>
-        <form action="api/shorturl" method="POST">
-          <fieldset>
-            <legend>URL Shortener</legend>
-            <label for="url_input">URL:</label>
-            <input id="url_input" type="text" name="url" placeholder="https://www.freecodecamp.org/" />
-            <input type="submit" value="POST URL" />
-          </fieldset>
-        </form>
-      </section>
+      <div id="sections">
+        <section id="examples">
+          Example
+          <div id="input1" class="example">Input: https://github.com/guirque/URL-Microservice-FCC-Project</div>
+          <div id="output1" class="example">Output: 15</div>
+        </section>
+        <!-- Section is as provided in boilerplate-->
+        <section id="formSection">
+          <form action="api/shorturl" method="POST">
+            <fieldset>
+              <label for="url_input">URL:</label>
+              <input id="url_input" type="text" name="url" placeholder="https://www.freecodecamp.org/" />
+              <input type="submit" value="POST URL" />
+            </fieldset>
+          </form>
+        </section>
+      </div>
+      <div id="description">
+        <h2>What is the URL Shortener?</h2>
+        <p>It's an API that is meant to help, as the name implies, shortening URLs, in order to provide users the ability to share links to their favorite websites without the need for long and confusing text.</p>
+        <h2>How Can I Use it?</h2>
+        <p>Post the URL in the form in the above section, and you will receive an object containing a "short_url" key. It holds the number of your new link. That means that accessing this website <i>/api/shorturl/[your number]</i> will redirect to the URL you posted.</p>
+      </div>
     </main>
+
+    </div>
     <footer>
-      <p>By <a href="https://www.freecodecamp.org/">freeCodeCamp</a></p>
+      <p>Made for the <a href="https://www.freecodecamp.org/learn/back-end-development-and-apis/">Back End Development and APIs course</a>, by <a href="https://www.freecodecamp.org/">freeCodeCamp</a>, with <a href="https://github.com/freeCodeCamp/boilerplate-project-urlshortener/">the provided boilerplate</a>. </p>
     </footer>
   </body>
 </html>
