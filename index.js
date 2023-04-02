@@ -142,7 +142,7 @@ app.use(express.urlencoded({extended: false}));
 app.use(express.json());
 const errorMsg = (res) => 
 {
-  res.status(400).json(
+  res.json(
     {
       error: 'invalid url'
     })
